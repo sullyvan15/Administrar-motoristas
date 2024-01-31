@@ -54,7 +54,7 @@ sap.ui.define(
          var filterMotorista = new sap.ui.model.Filter("Drivercode",  sap.ui.model.FilterOperator.EQ, this.idMotorista);
          arrayFilters.push(filterMotorista);
         
-         odataModel.read("/Licencas", {
+         odataModel.read("/LicencasSet", {
              filters: arrayFilters,
              success: function(e, t) {
                  var o = new sap.ui.model.json.JSONModel({

@@ -365,18 +365,18 @@ sap.ui.define([
 			this.oFilterBar = this.getView().byId("filterbar");
 			this.oTable = this.getView().byId("table");
 
-	//	this.oFilterBar.registerFetchData(this.fetchData);
-	//	this.oFilterBar.registerApplyData(this.applyData);
-	//	this.oFilterBar.registerGetFiltersWithValues(this.getFiltersWithValues);
+			this.oFilterBar.registerFetchData(this.fetchData);
+			this.oFilterBar.registerApplyData(this.applyData);
+			this.oFilterBar.registerGetFiltersWithValues(this.getFiltersWithValues);
 
-	//	var oPersInfo = new PersonalizableInfo({
-	//		type: "filterBar",
-	//		keyName: "persistencyKey",
-	//		dataSource: "",
-	//		control: this.oFilterBar
-	//	});
-	//	this.oSmartVariantManagement.addPersonalizableControl(oPersInfo);
-	//	this.oSmartVariantManagement.initialise(function () {}, this.oFilterBar);
+			var oPersInfo = new PersonalizableInfo({
+				type: "filterBar",
+				keyName: "persistencyKey",
+				dataSource: "",
+				control: this.oFilterBar
+			});
+			this.oSmartVariantManagement.addPersonalizableControl(oPersInfo);
+			this.oSmartVariantManagement.initialise(function () {}, this.oFilterBar);
 
         },
 

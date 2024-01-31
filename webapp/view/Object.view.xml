@@ -39,7 +39,7 @@
 
 
                                     <form:fields>
-                                        <ComboBox   id="statusMotorista"  change="handleChange"  input="handleInput" selectionChange="handleSelectionChange" ariaLabelledBy="suggestionsComboBoxLabel"  selectedKey="1" 
+                                        <ComboBox   id="statusMotorista"  change="handleChange"  selectionChange="handleSelectionChange" ariaLabelledBy="suggestionsComboBoxLabel"  selectedKey="1" 
                                         items="{
                                             path: 'statusMotorista>/'
                                          }">

@@ -211,7 +211,7 @@
                     </items>
                 </Table>
                 <Toolbar width="100%" height="1em"/>
-                <Table id="idProductsTable" items="{ path: 'turnos>/' }"  visible="false" noDataText="Esse motorista ainda não teve agendamentos de transporte">
+                <Table id="idProductsTable" items="{ path: 'turnos>/' }" visible="false" noDataText="Esse motorista ainda não teve agendamentos de transporte">
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="Transportes" level="H2" />

@@ -6,7 +6,6 @@
 	<ValueHelpDialog
 		title="Product"
 		ok=".onValueHelpOkPress2"
-		cancel=".onValueHelpCancelPress"
 		afterClose=".onValueHelpAfterClose"
 		supportRanges="true"
 		key="{Carrier}"
