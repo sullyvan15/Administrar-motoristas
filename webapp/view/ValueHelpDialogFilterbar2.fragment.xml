@@ -1,0 +1,31 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.comp.valuehelpdialog"
+	xmlns:m="sap.m"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core">
+	<ValueHelpDialog
+		title="Product"
+		ok=".onValueHelpOkPress2"
+		cancel=".onValueHelpCancelPress"
+		afterClose=".onValueHelpAfterClose"
+		supportRanges="true"
+		key="{Carrier}"
+		descriptionKey="Carrier">
+		<filterBar>
+			<fb:FilterBar advancedMode="false" search=".onFilterBarSearch" isRunningInValueHelpDialog="true" >
+			<!--	<fb:filterGroupItems>
+					<fb:FilterGroupItem
+						groupName="__$INTERNAL$"
+						name="ProductCode"
+						label="Centro"
+						visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="CFOP" />
+						</fb:control>
+					</fb:FilterGroupItem>
+				
+				</fb:filterGroupItems> -->
+			</fb:FilterBar> 
+		</filterBar>
+	</ValueHelpDialog>
+</core:FragmentDefinition>

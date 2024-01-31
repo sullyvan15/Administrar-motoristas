@@ -1,0 +1,44 @@
+<core:FragmentDefinition
+    xmlns="sap.ui.comp.valuehelpdialog"
+    xmlns:m="sap.m"
+    xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core">
+
+    <m:Dialog title="Adicionar nova licença" id="addLicenseDialog">
+        <m:content>
+            <f:SimpleForm id="form" minWidth="1024" maxContainerCols="2" editable="true" layout="ResponsiveGridLayout" labelSpanL="3" labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsL="1" columnsM="1">
+                <f:content>
+                    <m:Label text="Número da Licença" />
+                    <m:Input id="licenseNumberInput" type="Text" />
+
+					<m:Label text="Data de ínício" />
+                    <m:DatePicker id="expirationDateInput" placeholder=""/>
+
+                    <m:Label text="Data de Expiração" />
+                    <m:DatePicker id="StartDateInput" placeholder="" />
+
+                    <m:Label text="Tipo de Licença" />
+                    <m:ComboBox id="licenseTypeInput" selectedKey="3">
+                        <m:items>
+                            <core:Item key="1" text="CNH A - Veículos de duas ou três rodas" />
+                            <core:Item key="2" text="CNH B - Veículos de quatro rodas com até 3,5 ton" />
+							<core:Item key="3" text="CNH C - Veículos de carga, não articulados>3,5T" />
+							<core:Item key="4" text="CNH D - Transporte de passageiros" />
+							<core:Item key="5" text="CNH E - Carretas e caminhões com reboques e semi" />
+
+                            <!-- Adicione mais tipos de licença aqui -->
+                        </m:items>
+                    </m:ComboBox>
+                </f:content>
+            </f:SimpleForm>
+        </m:content>
+
+        <m:beginButton>
+            <m:Button text="Salvar" press="onSaveLicense" />
+        </m:beginButton>
+        <m:endButton>
+            <m:Button text="Cancelar" press=".oncloseDialog"/>
+        </m:endButton>
+    </m:Dialog>
+
+</core:FragmentDefinition>

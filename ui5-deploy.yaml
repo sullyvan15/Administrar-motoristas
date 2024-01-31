@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
+
+specVersion: "3.1"
+metadata:
+  name: project5
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: http://vhpxads4ci.sap.paranaxisto.com.br:8000/
+          client: "210"
+        app:
+          name: ZTD_MOTORISTA
+          description: Administrar motoristas
+          package: ZTD
+          transport: DS4K902692
+        exclude:
+          - /test/

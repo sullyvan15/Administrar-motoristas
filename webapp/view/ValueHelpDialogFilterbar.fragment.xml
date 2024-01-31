@@ -1,0 +1,39 @@
+<core:FragmentDefinition
+	xmlns="sap.ui.comp.valuehelpdialog"
+	xmlns:m="sap.m"
+	xmlns:fb="sap.ui.comp.filterbar"
+	xmlns:core="sap.ui.core">
+	<ValueHelpDialog
+		title="Cliente"
+		ok=".onValueHelpOkPress"
+		cancel=".onValueHelpCancelPress"
+		afterClose=".onValueHelpAfterClose"
+		supportRanges="true"
+		key="{Drivercode}"
+		descriptionKey="Drivercode">
+		<filterBar>
+			<fb:FilterBar advancedMode="false" search=".onFilterBarSearch" isRunningInValueHelpDialog="true" >
+		<!-- 		<fb:filterGroupItems>
+					<fb:FilterGroupItem
+						groupName="__$INTERNAL$"
+						name="ProductCode"
+						label="Cód. Cliente"
+						visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="BR_NFPARTNER" />
+						</fb:control>
+					</fb:FilterGroupItem>
+					<fb:FilterGroupItem
+						groupName="__$INTERNAL$"
+						name="ProductName"
+						label="Nome Cliente"
+						visibleInFilterBar="true">
+						<fb:control>
+							<m:Input name="BR_NFPARTNERNAME"  />
+						</fb:control>
+					</fb:FilterGroupItem>
+				</fb:filterGroupItems>  -->
+			</fb:FilterBar>
+		</filterBar>
+	</ValueHelpDialog>
+</core:FragmentDefinition>
