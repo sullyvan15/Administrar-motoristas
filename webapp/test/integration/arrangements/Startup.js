@@ -4,7 +4,7 @@ sap.ui.define([
 ], function(Opa5, ODataModel) {
 	"use strict";
 
-	return Opa5.extend("project5.test.integration.arrangements.Startup", {
+	return Opa5.extend("ztd_motorista.test.integration.arrangements.Startup", {
 
 		/**
 		 * Initializes mock server, then starts the app component
@@ -24,7 +24,7 @@ sap.ui.define([
 			// start the app UI component
 			this.iStartMyUIComponent({
 				componentConfig: {
-					name: "project5",
+					name: "ztd_motorista",
 					async: true
 				},
 				hash: oOptions.hash,

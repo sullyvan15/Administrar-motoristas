@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: project5
+  name: ztd_motorista
 type: application
 server:
   customMiddleware:
@@ -28,5 +28,5 @@ server:
     - name: fiori-tools-preview
       afterMiddleware: fiori-tools-appreload
       configuration:
-        component: project5
+        component: ztd_motorista
         ui5Theme: sap_horizon

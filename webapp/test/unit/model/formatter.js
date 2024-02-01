@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"project5/model/formatter"
+	"ztd_motorista/model/formatter"
 ], function (formatter) {
 	"use strict";
 

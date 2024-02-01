@@ -1,7 +1,7 @@
 /*global QUnit*/
 
 sap.ui.define([
-	"project5/model/models",
+	"ztd_motorista/model/models",
 	"sap/ui/Device"
 ], function (models, Device) {
 	"use strict";

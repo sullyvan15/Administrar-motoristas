@@ -3,7 +3,7 @@ sap.ui.define([
 ], function(Opa5) {
 	"use strict";
 
-	return Opa5.extend("project5.test.integration.pages.Common", {
+	return Opa5.extend("ztd_motorista.test.integration.pages.Common", {
 
 
 

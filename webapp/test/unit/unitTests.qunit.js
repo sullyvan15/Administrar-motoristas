@@ -5,7 +5,7 @@ sap.ui.getCore().attachInit(function () {
 	"use strict";
 
 	sap.ui.require([
-		"project5/test/unit/AllTests"
+		"ztd_motorista/test/unit/AllTests"
 	], function () {
 		QUnit.start();
 	});

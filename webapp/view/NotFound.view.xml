@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="project5.controller.NotFound"
+    controllerName="ztd_motorista.controller.NotFound"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
 

@@ -8,7 +8,7 @@
 |**Template Used**<br>1worklist|
 |**Service Type**<br>SAP System (ABAP On Premise)|
 |**Service URL**<br>http://vhpxads4ci.sap.paranaxisto.com.br:8000//sap/opu/odata/sap/ZGWPC_REL_MOTORISTA_SRV
-|**Module Name**<br>project5|
+|**Module Name**<br>ztd_motorista|
 |**Application Title**<br>App Title|
 |**Namespace**<br>|
 |**UI5 Theme**<br>sap_horizon|
@@ -20,7 +20,7 @@
 |**Object collection key**<br>Drivercode|
 |**Object ID**<br>Drivercode|
 
-## project5
+## ztd_motorista
 
 A Fiori application.
 

@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="project5.controller.App"
+    controllerName="ztd_motorista.controller.App"
     displayBlock="true"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">

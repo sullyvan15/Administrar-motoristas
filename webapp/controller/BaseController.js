@@ -8,7 +8,7 @@ sap.ui.define([
     // shortcut for sap.m.URLHelper
     var URLHelper = mobileLibrary.URLHelper;
 
-    return Controller.extend("project5.controller.BaseController", {
+    return Controller.extend("ztd_motorista.controller.BaseController", {
         /**
          * Convenience method for accessing the router.
          * @public

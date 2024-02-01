@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Start project5",
+            "name": "Start ztd_motorista",
             "type": "node",
             "request": "launch",
             "runtimeExecutable": "npx",
@@ -16,7 +16,7 @@
             ],
             "args": [
                 "--open",
-                "test/flpSandbox.html#project5-display"
+                "test/flpSandbox.html#ztd_motorista-display"
             ],
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart",
@@ -28,7 +28,7 @@
             }
         },
         {
-            "name": "Start project5 Mock",
+            "name": "Start ztd_motorista Mock",
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -44,7 +44,7 @@
                 "--config",
                 "./ui5-mock.yaml",
                 "--open",
-                "test/flpSandbox.html#project5-display"
+                "test/flpSandbox.html#ztd_motorista-display"
             ],
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart",
@@ -55,7 +55,7 @@
             }
         },
         {
-            "name": "Start project5 Local",
+            "name": "Start ztd_motorista Local",
             "type": "node",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -71,7 +71,7 @@
                 "--config",
                 "./ui5-local.yaml",
                 "--open",
-                "test/flpSandbox.html#project5-display"
+                "test/flpSandbox.html#ztd_motorista-display"
             ],
             "console": "internalConsole",
             "internalConsoleOptions": "openOnSessionStart",

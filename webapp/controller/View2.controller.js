@@ -11,7 +11,7 @@ sap.ui.define(
     "use strict";
     var s = null;
     var i = {};
-    return e.extend("project5.controller.View2", {
+    return e.extend("ztd_motorista.controller.View2", {
       onInit: function (oEvent) {
         var oMultiInput2 = this.byId("productInput2");
         this._oMultiInput2 = oMultiInput2;
@@ -103,7 +103,7 @@ onValueHelpRequest2: function(oEvent) {
         
    // this._oBasicSearchField = new SearchField();
     this.loadFragment({
-        name: "project5.view.ValueHelpDialogFilterbar2"
+        name: "ztd_motorista.view.ValueHelpDialogFilterbar2"
     }).then(function(oDialog) {
         var oFilterBar = oDialog.getFilterBar(), oColumnProductCode, oColumnProductName;
         this._oVHD = oDialog;
@@ -192,7 +192,7 @@ oncloseDialog: function(oEvent) {
 
       onAddLinha: function () {
             this.loadFragment({
-                name: "project5.view.NovoMotorista"
+                name: "ztd_motorista.view.NovoMotorista"
             }).then(function(oDialog) {
                 this._oVHD = oDialog;
                 this.getView().addDependent(oDialog);
