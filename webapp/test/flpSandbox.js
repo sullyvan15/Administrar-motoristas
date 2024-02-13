@@ -40,7 +40,7 @@ sap.ui.define([
 								"tileType": "sap.ushell.ui.tile.StaticTile",
 								"properties": {
 									"title": "App Title",
-									"targetURL": "#ztd_motorista-display"
+									"targetURL": "#ztdadmmotorista-display"
 								}
 							}]
 						}]
@@ -51,8 +51,8 @@ sap.ui.define([
 				"adapter": {
 					"config": {
 						"inbounds": {
-							"ztd_motorista-display": {
-								"semanticObject": "ztd_motorista",
+							"ztdadmmotorista-display": {
+								"semanticObject": "ztdadmmotorista",
 								"action": "display",
 								"description": "A Fiori application.",
 								"title": "App Title",
@@ -61,8 +61,8 @@ sap.ui.define([
 								},
 								"resolutionResult": {
 									"applicationType": "SAPUI5",
-									"additionalInformation": "SAPUI5.Component=ztd_motorista",
-									"url": sap.ui.require.toUrl("ztd_motorista")
+									"additionalInformation": "SAPUI5.Component=ztdadmmotorista",
+									"url": sap.ui.require.toUrl("ztdadmmotorista")
 								}
 							}
 						}

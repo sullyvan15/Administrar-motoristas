@@ -11,7 +11,7 @@ sap.ui.define([
 
 	opaTest("Should open the share menu and display the share buttons on the worklist page", function (Given, When, Then) {
 		// Arrangements
-		Given.iStartMyFLPApp({intent : "ztd_motorista-display"});
+		Given.iStartMyFLPApp({intent : "ztdadmmotorista-display"});
 
 		// Actions
 		When.onTheWorklistPage.iPressOnTheShareButton();

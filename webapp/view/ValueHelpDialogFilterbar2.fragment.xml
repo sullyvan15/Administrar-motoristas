@@ -3,13 +3,13 @@
 	xmlns:m="sap.m"
 	xmlns:fb="sap.ui.comp.filterbar"
 	xmlns:core="sap.ui.core">
-	<ValueHelpDialog
+	<ValueHelpDialog 
 		title="Product"
 		ok=".onValueHelpOkPress2"
+		cancel="oncloseDialog"
 		afterClose=".onValueHelpAfterClose"
-		supportRanges="true"
-		key="{Carrier}"
-		descriptionKey="Carrier">
+		supportRanges="false">
+
 		<filterBar>
 			<fb:FilterBar advancedMode="false" search=".onFilterBarSearch" isRunningInValueHelpDialog="true" >
 			<!--	<fb:filterGroupItems>

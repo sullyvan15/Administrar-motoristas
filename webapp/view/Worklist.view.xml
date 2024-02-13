@@ -1,145 +1,99 @@
-<mvc:View
-    controllerName="project5.controller.Worklist"
-    xmlns="sap.m"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns:semantic="sap.f.semantic"
-    xmlns:f="sap.f"
-    xmlns:t="sap.ui.table"
+<mvc:View xmlns:actiontoolbar="sap.ui.mdc.actiontoolbar"
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:smartTable="sap.ui.comp.smarttable"
+    xmlns:table="sap.ui.table"
     xmlns:fb="sap.ui.comp.filterbar"
-    xmlns:svm="sap.ui.comp.smartvariants"
-    xmlns:core="sap.ui.core"
-    
-    >
-    <Page id="page" >
-        <f:DynamicPageTitle>
-            <f:heading>
-                <svm:SmartVariantManagement id="svm" showExecuteOnSelection="true" />
-            </f:heading>
-            <f:expandedContent>
-                <Label id="expandedLabel" text="" />
-            </f:expandedContent>
-            <f:snappedContent>
-                <Label id="snappedLabel" text="" />
-            </f:snappedContent>
-        </f:DynamicPageTitle>
-        <f:DynamicPageHeader>
-            <f:content>
-                <fb:FilterBar id="filterbar" persistencyKey="myPersKey" useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
-                    
-                
-                
-                <fb:filterGroupItems>
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+	controllerName="ztdadmmotorista.controller.Worklist"
+	height="100%">
+
+		<!-- use this to make the table occupy the available screen height -->
+		<VBox fitContainer="true" height="100%"   >
            
-                        <fb:FilterGroupItem name="Cliente" label="Motorista" groupName="Group1" visibleInFilterBar="true" >
-                            <fb:control>
-                                
-                            <MultiInput id="productInput" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" >
+            <fb:FilterBar id="filterbar"  persistencyKey="myPersKey"  useToolbar="false" search=".onSearch" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+                 
+            <fb:filterGroupItems>
+                    <fb:FilterGroupItem name="Cliente" label="Motorista" groupName="Group1" visibleInFilterBar="true"  >
+                        <fb:control>
+                            
+                        <MultiInput id="fieldBarCliente" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest2" suggestionItems="{/MotoristaSet}" >
+                            <suggestionItems>
+                                <core:ListItem
+                                    key="{Drivercode}"
+                                    text="{
+                                        path : 'Drivercode',
+                                        formatter : '.whitespace2Char'
+                                    }"
+                                    additionalText="{
+                                        path : 'Nome',
+                                        formatter : '.whitespace2Char'
+                                    }"
+                                    />
+                            </suggestionItems>
+                        </MultiInput>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+
+                    <fb:FilterGroupItem name="Centro" label="Transportadora" groupName="Group1" visibleInFilterBar="true" >
+                        <fb:control>
+                            <MultiInput id="fieldBarCentro" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest2" suggestionItems="{/Transportadoras}" >
                                 <suggestionItems>
                                     <core:ListItem
-                                        key="{BR_NFPARTNER}"
-                                        text="{
-                                            path : 'BR_NFPARTNER',
-                                            formatter : '.whitespace2Char'
-                                        }"
-                                        additionalText="{
-                                            path : 'BR_NFPARTNERNAME',
-                                            formatter : '.whitespace2Char'
-                                        }"
-                                        />
+                                    key="{CFOP}"
+                                    text="{
+                                        path : 'Carrier',
+                                        formatter : '.whitespace2Char'
+                                    }"
+                                    additionalText="{
+                                        path : 'Carrier_desc',
+                                        formatter : '.whitespace2Char'
+                                    }"
+                                    />
                                 </suggestionItems>
                             </MultiInput>
-                            </fb:control>
-                        </fb:FilterGroupItem>
-                        <fb:FilterGroupItem name="Centro" label="Transportadora" groupName="Group1" visibleInFilterBar="true">
-                            <fb:control>
-                                <MultiInput id="productInput2" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest2">
-                                    <suggestionItems>
-                                        <core:ListItem
-                                        key="{CFOP}"
-                                        text="{
-                                            path : 'PLANT',
-                                            formatter : '.whitespace2Char'
-                                        }"
-                                        additionalText="{
-                                            path : 'PLANT_DESC',
-                                            formatter : '.whitespace2Char'
-                                        }"
-                                        />
-                                    </suggestionItems>
-                                </MultiInput>
-                            </fb:control>
-                        </fb:FilterGroupItem>
+                        </fb:control>
+                    </fb:FilterGroupItem>
+                </fb:filterGroupItems>
+            </fb:FilterBar>
 
-        
-                    </fb:filterGroupItems>
-                </fb:FilterBar>
-            </f:content>
-        </f:DynamicPageHeader>
-
-
-            <Table
-                id="table"
-                width="auto"
-                showSeparators="Inner"
-                items="{
-                    path: '/MotoristaSet',
-                    sorter: {
-                        path: 'Drivercode',
-                        descending: false
-                    }
-                }"
+			<smartTable:SmartTable id="LineItemsSmartTable" 
+                        entitySet="MotoristaSet" 
+                        
+                        initialNoDataText="Utilize o filtro para buscar dados"
+                        header="Motoristas" 
+                        height="100%"
+                        persistencyKey="SmartTableAnalytical_Explored" 
+                        tableType="ResponsiveTable"
+                        initiallyVisibleFields="Drivercode,Nome,Carrier,StatusTxt,Licenca,Link"  
+                        ignoredFields="FirstName,ChaDate,ChaName,CreDate,CreName,DrvXblck,LastName,Perscode,Drvstatus,LChaDate,LChaName" 
+				        enableAutoBinding="true" 
+                        showFullScreenButton="true" 
                 
-                noDataText="{worklistView>/tableNoDataText}"
-                busyIndicatorDelay="{worklistView>/tableBusyDelay}"
-             
-                
-                growingScrollToLoad="true"
-                mode="None"
-                updateFinished=".onUpdateFinished">
+                        beforeRebindTable="onBeforeRebindTable"
+                        enableAutoColumnWidth="true">
+                <smartTable:customToolbar>
+                    <OverflowToolbar>
+                        <ToolbarSpacer/>
+                        <Button text="Novo motorista" icon="sap-icon://add-employee" press="onNovoMotorista"/>
+                    </OverflowToolbar>
+                </smartTable:customToolbar>
 
-                <headerToolbar>
-					<OverflowToolbar id="otbSubheader">
-						<ToolbarSpacer/>
-                        <Button icon="sap-icon://add" text="Adicionar novo motorista"  press=".onNovoMotorista"></Button>
-                        <Button icon="sap-icon://excel-attachment"></Button>
-					</OverflowToolbar>
-				</headerToolbar>
+                <table:Table id="idTable" rowActionCount="1" width="100%" selectionMode="None" >
+                    <table:rowActionTemplate>
+                        <table:RowAction id="idRowAction">
+                            <table:items>
+                                <table:RowActionItem id="idRowActionItem" type="Navigation" press="onRowActionItemPress" icon="sap-icon://feeder-arrow"/>
+                            </table:items>
+                        </table:RowAction>
+                    </table:rowActionTemplate>
+                </table:Table>
 
-                <columns>
-                    <Column id="nameColumn" width="75px">
-                        <Text text="Matrícula" id="nameColumnTitle"/>
-                    </Column>
-                    <Column id="nameColumn2">
-                        <Text text="Nome do motorista" id="nameColumnTitle2"/>
-                    </Column>
-                    <Column id="nameColumn3">
-                        <Text text="Transportadora" id="nameColumnTitle3"/>
-                    </Column>
-                    <Column id="Statusatual">
-                        <Text text="Status atual" id="nameColumnTitle4"/>
-                    </Column>
-                    <Column id="">
-                        <Text text="Licença" id="nameColumnTitle5"/>
-                    </Column>
+			</smartTable:SmartTable> 
 
-
-                </columns>
-
-                <items>
-                    <ColumnListItem
-                        type="Navigation"
-                        press=".onPress">
-                        <cells>
-                            <ObjectIdentifier 
-                                text="{Drivercode}" />
-
-                            <Text text="{FirstName} {LastName}"></Text>
-                            <Text text="{Carrier}"></Text>
-                            <Text text="{StatusTxt}"></Text>
-                            <Text text="{Licenca}"></Text>
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
-    </Page>
+            
+		</VBox>
 </mvc:View>

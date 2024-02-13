@@ -6,7 +6,7 @@ sap.ui.define([
 ], function (BaseController, JSONModel, History, formatter) {
     "use strict";
 
-    return BaseController.extend("ztd_motorista.controller.Object", {
+    return BaseController.extend("ztdadmmotorista.controller.Object", {
 
         formatter: formatter,
 

@@ -3,7 +3,7 @@ sap.ui.define([
 ], function (BaseController) {
     "use strict";
 
-    return BaseController.extend("ztd_motorista.controller.App", {
+    return BaseController.extend("ztdadmmotorista.controller.App", {
 
         onInit : function () {
             // apply content density mode to root view

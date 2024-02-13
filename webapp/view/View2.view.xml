@@ -1,4 +1,4 @@
-<mvc:View controllerName="ztd_motorista.controller.View2"
+<mvc:View controllerName="ztdadmmotorista.controller.View2"
     xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
     xmlns="sap.m"
     xmlns:core="sap.ui.core"
@@ -6,28 +6,37 @@
     xmlns:form="sap.ui.layout.form"
     xmlns:l="sap.ui.layout"
     xmlns:html="http://www.w3.org/1999/xhtml">
-    <Page id="page2" title="Adicionar um motorista" showNavButton="false" navButtonPress="onButtonCancel" >
+    <Page id="page2" title="Novo motorista" showNavButton="true" navButtonPress="onButtonCancel" >
         <content>
             <VBox id="vbox01" class="sapUiSmallMargin">
 
-                <form:Form editable="true" visible="true" id="form2">
+                <form:Form editable="true" visible="true" id="form2" >
                     <form:layout>
-                        <form:ResponsiveGridLayout labelSpanXL="4" labelSpanM="12" adjustLabelSpan="false" emptySpanXL="0" columnsXL="2" singleContainerFullSize="false" />
+                        <form:ResponsiveGridLayout labelSpanXL="4" labelSpanM="12"   adjustLabelSpan="false" emptySpanXL="0" columnsXL="2" singleContainerFullSize="false" />
                     </form:layout>
+                    <form:toolbar>
+                        <Toolbar id="TB1">
+                            <Title id="Title1" text="Detalhes do motorista"/>
+                            <ToolbarSpacer />
+                            <Button id="buttonEdit"   icon="sap-icon://edit"  text="Editar"   press="onSetEditable" visible="false" />
+                            <Button id="buttonDelete" icon="sap-icon://delete" text="Excluir" press="onConfirmDelete" visible="false"  />
+                        </Toolbar>
+                    </form:toolbar>
                     <form:title>
                         <core:Title id="titleMatricula" text="Detalhes do motorista" level="Auto" />
                     </form:title>
                     <form:formContainers>
-                        <form:FormContainer visible="true" title="Detalhes">
+                        <form:FormContainer visible="true" title="Detalhes"  >
 
                             <form:formElements>
-                                <form:FormElement visible="true">
+                                
+                                <form:FormElement visible="true" binding="{statusMotorista>/}" >
                                     <form:label>
                                         <Label text="Nome" />
                                     </form:label>
 
                                     <form:fields>
-                                        <Input required="true" id="nameInput" placeholder="Nome" showSuggestion="true" showValueHelp="false" fieldGroupIds="Group1"/>
+                                        <Input required="true" id="nameInput" placeholder="Nome" showSuggestion="true" showValueHelp="false" fieldGroupIds="Group1"  value="{MotoristaSet>Nome}"  />
                                     </form:fields>
                                 </form:FormElement>
 
@@ -52,24 +61,24 @@
                                     </form:fields>
                                 </form:FormElement>
 
-                                <form:FormElement id="formCadastro" visible="false">
+                                <form:FormElement id="formCadastro" visible="{= ${oEvent.DriverId} === undefined }">
                                     <form:label>
-                                        <Label text="Cadastrado em" />
+                                        <Label text="Cadastrado em"  />
                                     </form:label>
 
                                     <form:fields>
-                                        <Text id="textCadastradoEm"></Text>
+                                        <DatePicker id="textCadastradoEm" value="{MotoristaSet>CreDate}" editable="false" width="7em" ></DatePicker>
                                     </form:fields>
                                 </form:FormElement>
 
 
-                                <form:FormElement id="formModificado" visible="false">
+                                <form:FormElement id="formModificado"   visible="{= ${oEvent.ChaDate} === '00000000' }" >
                                     <form:label>
-                                        <Label  text="Modificado em" />
+                                        <Label  text="Modificado em"   />
                                     </form:label>
 
                                     <form:fields>
-                                     <Text id="textModificadoEm" ></Text>
+                                     <DatePicker id="textModificadoEm"  value="{MotoristaSet>CreDate}" editable="false"  visible="{= ${oEvent.ChaDate} === '00000000' }" width="7em"></DatePicker>
                                     </form:fields>
                                 </form:FormElement>
 
@@ -83,11 +92,11 @@
 
                                 <form:FormElement>
                                     <form:label>
-                                        <Label text="Transportadora" design="Standard" textAlign="Begin" textDirection="Inherit" />
+                                        <Label text="Transportadora" design="Standard" textAlign="Begin" textDirection="Inherit"    />
                                     </form:label>
 
                                     <form:fields> 
-                                        <Input required="true" id="productInput2" placeholder="Transportadora"   showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest2"/>
+                                        <Input required="true" id="productInput2" placeholder="Transportadora"   showSuggestion="true" showValueHelp="true"  valueHelpRequest=".onValueHelpRequest2"/>
                                     </form:fields>
                                 </form:FormElement>
 
@@ -103,7 +112,23 @@
                                     </form:fields>
                                 </form:FormElement>
 
+                                <form:FormElement id="formTurno" visible="false" >
+                                    <form:label>
+                                        <Label text="Turno"/>
+                                    </form:label>
 
+
+                                    <form:fields>
+                                        <ComboBox   id="statusTurno"  change="handleChange"  editable="false"  selectionChange="handleSelectionChange" ariaLabelledBy="suggestionsComboBoxLabel"  selectedKey="1" 
+                                       >
+                                         <items>
+                                            <core:Item  key="{statusMotorista>key}" text="{statusMotorista>text}" />
+                                         </items>
+                                      
+                                        </ComboBox>
+
+                                    </form:fields>
+                                </form:FormElement>
 
                             </form:formElements>
                         </form:FormContainer>
@@ -111,21 +136,22 @@
                     </form:formContainers>
                 </form:Form>
                 
-                <Toolbar width="100%" height="1em"  />
-                <Table id="tableCompartimentos" noDataText="Sem Licenças"  mode="SingleSelect" inset="false" items="{
-                                path: '/'
-                            }" busyIndicatorDelay="200" autoPopinMode="true">
+                <Toolbar width="100%" height="1em"/>
+                <Table id="tableCompartimentos" noDataText="Sem Licenças"  items="{ path: 'LicencasSet>/' }"  mode="None" inset="false" busyIndicatorDelay="200" autoPopinMode="true" >
                     <headerToolbar>
                         <OverflowToolbar>
                             <Title text="Licenças" level="H2" />
                             <ToolbarSpacer/>
-                            <Button icon="sap-icon://add" press="onAddLinha" text="Adicionar uma nova Licença" />
-                            <Button id="buttonDelete" visible="false" icon="sap-icon://delete" press="onAddLinha" text="Eliminar Licença" />
+                            <Button id="buttonAdicionaLicenca" icon="sap-icon://add" press="onAdicionaLicenca" text="Nova licença" />
+                            <Button id="buttonElimninaLicenca" visible="false" icon="sap-icon://delete" press="onElimninaLicenca" text="Eliminar Licença" />
                         </OverflowToolbar>
                     </headerToolbar>
                     <columns>
-                        <Column hAlign="Center" importance="High" width="6em">
+                        <Column hAlign="Center" importance="Low" width="6em">
                             <Text text="Tipo" />
+                        </Column>
+                        <Column demandPopin="true" hAlign="Center" importance="High" width="12em">
+                            <Text text="Descrição" />
                         </Column>
                         <Column hAlign="Center" importance="High" width="7em">
                             <Text text="N° Carteira" />
@@ -135,115 +161,81 @@
                             <Text text="Início da Validade" />
                         </Column>
 
-                        <Column demandPopin="true" importance="Low" width="14em">
+                        <Column demandPopin="true" importance="Low" width="7em">
                             <Text text="Fim da validade" />
                         </Column>
 
-                        <Column demandPopin="true" hAlign="Center" importance="Low" width="6em">
-                            <Text text="Descrição" />
+                   
+                        <Column id="colunaDelete"  demandPopin="true" hAlign="End" importance="Low" width="6em" >
+                           
                         </Column>
 
                     </columns>
                     <items>
-                        <ColumnListItem vAlign="Middle">
-                            <cells>
-                                <Input id="tipoLicencaD" placeholder="Categoria da liçenca de habilitação" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest" suggestionItems="{/ProductCollection}">
-                                    <suggestionItems>
-                                        <core:Item text="{Name}" />
-                                    </suggestionItems>
-                                </Input>
-                                <ObjectIdentifier text="{IdComp}" />
-                                <ObjectIdentifier text="{Contrato}"/>
-                                <ObjectIdentifier title="{Maktx}" text="{Matnr}" />
-                                <ObjectIdentifier text="{TimeAgend}" />
-                                <ObjectNumber number="{ parts: [{path:'Qtde'}],
-                                                        type: 'sap.ui.model.type.Float' }" unit="{Meins}" />
-
-                                <Input id="inputLgort" value="{Lgort}" type="Text" valueLiveUpdate="true" editable="{= ${controlScreen>/editMode} &amp;&amp; ${MainLine} === 'X'}" valueHelpOnly="true" valueHelpRequest="onSelectDialogPress" showValueHelp="true" width="6em">
-                                    <customData>
-                                        <core:CustomData key="title" value="Depósito" />
-                                        <core:CustomData key="key" value="Lgort" />
-                                        <core:CustomData key="path" value="/SH_DepositoSet" />
-                                        <core:CustomData key="multi" value="false" />
-                                        <core:CustomData key="descr" value="Lgobe" />
-                                    </customData>
-                                </Input>
-
-                                <Input value="{Lacre}" type="Text" fieldWidth="{60%}" valueLiveUpdate="true" editable="{controlScreen>/editMode}" maxLength="10" width="8em" />
-                                <!-- <Input value="{Cor}" type="Text" fieldWidth="60%" valueLiveUpdate="true" editable="{/editMode}" /> -->
-
-                                <ComboBox value="{Cor}" items="{
-                                            path: 'main>/SH_CorSet',
-                                            sorter: { path: 'CorLacre' },
-                                            templateShareable : true
-                                        }" editable="{controlScreen>/editMode}" change="onChangeComboBox" width="8em">
-                                    <core:Item key="{main>CorLacre}" text="{main>CorLacre}" />
-                                </ComboBox>
-
-                                <Input value="{Amostra}" type="Text" fieldWidth="60%" valueLiveUpdate="true" editable="{= ${controlScreen>/editMode} &amp;&amp; ${MainLine} === 'X'}" maxLength="16" width="8em" />
-
-                                <FlexBox alignItems="Start" justifyContent="SpaceAround">
-                                    <Input id="inputPesoEntrada" value="{PesoEntrada}" type="Text" valueLiveUpdate="true" editable="{= ${controlScreen>/editMode} &amp;&amp; ${MainLine} === 'X'}" liveChange="OnFieldInt" maxLength="6" width="5em" />
-                                    <Button id='buttonPesoEntrada' tooltip="Adquirir peso da balança" icon="sap-icon://inbox" type="Emphasized" enabled="{= ${controlScreen>/editMode} &amp;&amp; ${MainLine} === 'X'}" press="onButtonPeso" />
-                                </FlexBox>
-
-
-                                <!-- Exemplo abaixo usando a função
-                                 <Input id="inputPesoEntrada" value="{PesoEntrada}" type="Text" fieldWidth="60%" valueLiveUpdate="true" editable="{path: '', formatter: '.isEditable'}" liveChange="OnFieldInt" maxLength="6" /> -->
-
-
-                                <FlexBox alignItems="Start" justifyContent="SpaceBetween">
-                                    <Input id="inputPesoSaida" value="{PesoSaida}" type="Text" valueLiveUpdate="true" editable="{= ${controlScreen>/editMode} &amp;&amp; ${MainLine} === 'X'}" liveChange="OnFieldInt" maxLength="6" width="5em" />
-                                    <Button id='buttonPesoSaida' icon="sap-icon://inbox" type="Emphasized" tooltip="Adquirir peso da balança" press="onButtonPeso" enabled="{= ${controlScreen>/editMode} &amp;&amp; ${MainLine} === 'X'}"/>
-                                </FlexBox>
-
-                                <!-- <ObjectNumber number="{WeightMeasure}" unit="{WeightUnit}" state="{
-                                                            path: 'WeightMeasure',
-                                                            formatter: 'sap.m.sample.TableVerticalAlignment.Formatter.weightState'
-                                                        }" /> -->
-                                <!-- <ObjectNumber number="{
-                                                            parts:[{path:'Price'},{path:'CurrencyCode'}],
-                                                            type: 'sap.ui.model.type.Currency',
-                                                            formatOptions: {showMeasure: false}
-                                                        }" unit="{CurrencyCode}" /> -->
+                        <ColumnListItem vAlign="Middle" >
+                            <cells >
+                                <Input id="catCNH" placeholder="Tipo CNH" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest2" value="{LicencasSet>LICENSETYP}"  visible="{= ${editMode} !== true }"/>
+                                <Input id="descCNH" value="{LicencasSet>LICENSE_DESC}"   editable="false"   />
+                                <Input id="numCNH" value="{LicencasSet>LICENSENO}"  editable="{= ${editMode} !== true }"/>
+                                <DatePicker id="iniDateCNH" value="{LicencasSet>VALID_FROM}" editable="{= ${editMode} !== true }" ></DatePicker>
+                                <DatePicker id="endDateCNH" value="{LicencasSet>VALID_TO}" editable="{= ${editMode} !== true }"></DatePicker>
+                                <Button id="buttonDeleteCNH" icon="sap-icon://delete" type="Transparent" press="onElimninaLicenca" />
                             </cells>
                         </ColumnListItem>
                     </items>
                 </Table>
+
                 <Toolbar width="100%" height="1em"/>
-                <Table id="idProductsTable" items="{ path: 'turnos>/' }" visible="false" noDataText="Esse motorista ainda não teve agendamentos de transporte">
+                <Table id="idProductsTable" items="{ path: 'AgendamentoSet>/' }" visible="false" noDataText="Esse motorista ainda não possui agendamentos de transporte">
                     <headerToolbar>
                         <OverflowToolbar>
-                            <Title text="Transportes" level="H2" />
+                            <Title text="Histórico de transportes" level="H2" />
                             <ToolbarSpacer/>
                         </OverflowToolbar>
                     </headerToolbar>
                     <columns>
                         <Column width="12em">
-                            <Text text=""/>
+                            <Text text="Agendamento"/>
                         </Column>
                         <Column minScreenWidth="Tablet" demandPopin="true" >
-                            <Text text="Data início"/>
+                            <Text text="Compartimento"/>
                         </Column>
                         <Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
-                            <Text text="Data Fim"/>
+                            <Text text="Veículo"/>
                         </Column>
                         <Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
-                            <Text text="Hora do turno"/>
+                            <Text text="Modalidade"/>
                         </Column>
-                        <Column hAlign="End">
+                        <Column  minScreenWidth="Desktop">
                             <Text text="Transportadora"/>
                         </Column>
+                        <Column  minScreenWidth="Desktop">
+                            <Text text="Dia"/>
+                        </Column>
+                        <Column  minScreenWidth="Desktop">
+                            <Text text="Hora"/>
+                        </Column>
+                        <Column  minScreenWidth="Desktop">
+                            <Text text="Status"/>
+                        </Column>
+                        <Column  minScreenWidth="Desktop">
+                            <Text text="Remessa"/>
+                        </Column>
+
                     </columns>
                     <items>
                         <ColumnListItem vAlign="Middle">
                             <cells>
-                                <ObjectIdentifier title="{FirstName} {LastName}" text="N° Motorista: {Drivercode}"/>
-                                <Text text="{Drvstatus}"/>
-                                <Text text="{Width} x {Depth} x {Height} {DimUnit}"/>
-                                <Text text="{Drvstatus}"/>
-                                <Text text="{Drvstatus}"/>
-                                <Button icon="sap-icon://navigation-right-arrow" />
+                                <ObjectIdentifier title="{AgendamentoSet>IDAGEND} " text="{AgendamentoSet>ITEM_AGEND}"/>
+                                <Text text="{AgendamentoSet>COMPARTIMENTO}"/>
+                                <Text text="{AgendamentoSet>VEHICLE}"/>
+                                <Text text="{AgendamentoSet>MODALIDADE}"/>
+                                <Text text="{AgendamentoSet>TRANSPORTADORA}"/>
+                                <DatePicker value="{AgendamentoSet>DATEAGEND}" editable="false" ></DatePicker>
+                                <TimePicker value="{AgendamentoSet>TIMEAGEND}" editable="false" ></TimePicker>
+                                <Text text="{AgendamentoSet>STATUS}"/>
+                                <Text text="{AgendamentoSet>REMESSA}"/>
+                               
                             </cells>
                         </ColumnListItem>
                     </items>
@@ -255,11 +247,11 @@
         </content>
 
         <footer>
-            <OverflowToolbar width="100%" height="46px" design="Auto" enabled="true" visible="{controlScreen>/noFinished}">
+            <OverflowToolbar   width="100%" height="46px" design="Auto" enabled="true"  visible="{controlScreen>/noFinished}">
                 <content>
-                    <ToolbarSpacer width="" />
-                    <Button text="Salvar" type="Default" iconFirst="true" width="auto" enabled="true" visible="{controlScreen>/editMode}" iconDensityAware="false" press="onButtonSave" icon="sap-icon://save" />
-                    <Button text="Cancelar" type="Reject" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onButtonCancel" />
+                    <ToolbarSpacer   width="" visible="true"/>
+                    <Button id="buttonSave"  text="Salvar" type="Default" iconFirst="true" width="auto" enabled="true"  iconDensityAware="false" press="onButtonSave" icon="sap-icon://save" />
+                    <Button id="buttonCancel"  text="Cancelar" type="Reject" iconFirst="true" width="auto" enabled="true" visible="true" iconDensityAware="false" press="onButtonCancel" />
 
                 </content>
             </OverflowToolbar>

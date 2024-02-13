@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: ztd_motorista
+  name: ztdadmmotorista
 type: application
 builder:
   resources:
@@ -17,7 +17,7 @@ builder:
           url: http://vhpxads4ci.sap.paranaxisto.com.br:8000/
           client: "210"
         app:
-          name: ZTD_MOTORISTA
+          name: ztd_motorista
           description: Administrar motoristas
           package: ZTD
           transport: DS4K902692

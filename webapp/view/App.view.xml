@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="ztd_motorista.controller.App"
+    controllerName="ztdadmmotorista.controller.App"
     displayBlock="true"
     xmlns="sap.m"
     xmlns:mvc="sap.ui.core.mvc">
@@ -7,6 +7,7 @@
     <Shell>
         <App
             id="app"
+            height="100%"
             busy="{appView>/busy}"
             busyIndicatorDelay="{appView>/delay}"/>
     </Shell>
