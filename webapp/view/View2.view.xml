@@ -69,6 +69,9 @@
                                     <form:fields>
                                         <DatePicker id="textCadastradoEm" value="{MotoristaSet>CreDate}" editable="false" width="7em" ></DatePicker>
                                     </form:fields>
+                                    <form:fields>
+                                        <DatePicker id="textCadastradoPor" value="{MotoristaSet>CreName}" visible="false" editable="false" width="7em" ></DatePicker>
+                                    </form:fields>
                                 </form:FormElement>
 
 
@@ -96,7 +99,23 @@
                                     </form:label>
 
                                     <form:fields> 
-                                        <Input required="true" id="productInput2" placeholder="Transportadora"   showSuggestion="true" showValueHelp="true"  valueHelpRequest=".onValueHelpRequest2"/>
+                                       
+                                        <Input required="true" id="productInput2" placeholder="Transportadora" valueHelpOnly="true"  showSuggestion="true" showValueHelp="true"  valueHelpRequest=".onValueHelpRequest2" >
+                                            <suggestionItems>
+                                                <core:ListItem
+                                                key="{CFOP}"
+                                                text="{
+                                                    path : 'Carrier',
+                                                    formatter : '.whitespace2Char'
+                                                }"
+                                                additionalText="{
+                                                    path : 'Carrier_desc',
+                                                    formatter : '.whitespace2Char'
+                                                }"
+                                                />
+                                            </suggestionItems>
+                                        </Input>
+                                
                                     </form:fields>
                                 </form:FormElement>
 
@@ -165,6 +184,10 @@
                             <Text text="Fim da validade" />
                         </Column>
 
+                        <Column demandPopin="true" importance="Low" width="7em" visible="false">
+                            <Text text="Status" />
+                        </Column>
+
                    
                         <Column id="colunaDelete"  demandPopin="true" hAlign="End" importance="Low" width="6em" >
                            
@@ -174,11 +197,12 @@
                     <items>
                         <ColumnListItem vAlign="Middle" >
                             <cells >
-                                <Input id="catCNH" placeholder="Tipo CNH" showSuggestion="true" showValueHelp="true" valueHelpRequest=".onValueHelpRequest2" value="{LicencasSet>LICENSETYP}"  visible="{= ${editMode} !== true }"/>
+                                <Input id="catCNH" placeholder="Tipo CNH" showSuggestion="true" showValueHelp="true" valueHelpOnly="true" valueHelpRequest=".onValueHelpRequest2" value="{LicencasSet>LICENSETYP}"  visible="{= ${editMode} !== true }"/>
                                 <Input id="descCNH" value="{LicencasSet>LICENSE_DESC}"   editable="false"   />
                                 <Input id="numCNH" value="{LicencasSet>LICENSENO}"  editable="{= ${editMode} !== true }"/>
-                                <DatePicker id="iniDateCNH" value="{LicencasSet>VALID_FROM}" editable="{= ${editMode} !== true }" ></DatePicker>
-                                <DatePicker id="endDateCNH" value="{LicencasSet>VALID_TO}" editable="{= ${editMode} !== true }"></DatePicker>
+                                <DatePicker id="iniDateCNH" value="{LicencasSet>VALID_FROM}" editable="{= ${editMode} !== true }"  ></DatePicker>
+                                <DatePicker id="endDateCNH" value="{LicencasSet>VALID_TO}" editable="{= ${editMode} !== true }" ></DatePicker>
+                                <Text text="{LicencasSet>STATUS}" visible="false"></Text>
                                 <Button id="buttonDeleteCNH" icon="sap-icon://delete" type="Transparent" press="onElimninaLicenca" />
                             </cells>
                         </ColumnListItem>

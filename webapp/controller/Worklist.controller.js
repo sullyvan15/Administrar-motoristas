@@ -45,10 +45,9 @@ sap.ui.define([
         onInit : function () {
             sap.ui.core.UIComponent.getRouterFor(this).getRoute("worklist").attachPatternMatched(this._onRouteMatched, this);;
              sap.ui.core.UIComponent.getRouterFor(this).getRoute("View2").attachPatternMatched(this._onRouteMatched, this);
-            // keeps the search state
-            this._aTableSearchState = [];
 
             this.onVariantsInitialized();
+       
 
         },
 
@@ -63,7 +62,6 @@ sap.ui.define([
             oRouter.navTo("View2", { driverId: oLine.Drivercode });
             location.reload();
         },
-
 
     onValueHelpRequest2: function(oEvent) {
         var spath, field, field2, Label1, Label2, id, title;
@@ -155,11 +153,20 @@ sap.ui.define([
         onVariantsInitialized: function(oEvent) {
         
 
-            this.oSmartVariantManagement = this.getView().byId("svm");
+			this.oSmartVariantManagement = this.getView().byId("svm");
 			this.oExpandedLabel = this.getView().byId("expandedLabel");
 			this.oSnappedLabel = this.getView().byId("snappedLabel");
 			this.oFilterBar = this.getView().byId("filterbar");
-			this.oTable = this.getView().byId("table");
+			this.oTable = this.getView().byId("idTable");
+
+			var oPersInfo = new PersonalizableInfo({
+				type: "filterBar",
+				keyName: "persistencyKey",
+				dataSource: "",
+				control: this.oFilterBar
+			});
+			this.oSmartVariantManagement.addPersonalizableControl(oPersInfo);
+			this.oSmartVariantManagement.initialise(function () {}, this.oFilterBar);
             
 
         },
@@ -174,7 +181,8 @@ sap.ui.define([
             }
 
             for (let i = 0; i < this.byId("fieldBarCentro").getTokens().length; i++) {
-                var filterCentro  = new sap.ui.model.Filter("Carrier",  sap.ui.model.FilterOperator.EQ, this.byId("fieldBarCentro").getTokens()[i].mProperties.key);
+                var transportadora = this.byId("fieldBarCentro").getTokens()[i].mProperties.key !== "" ? this.byId("fieldBarCentro").getTokens()[i].mProperties.key : this.byId("fieldBarCentro").getTokens()[i].mProperties.text;
+                var filterCentro  = new sap.ui.model.Filter("Carrier",  sap.ui.model.FilterOperator.EQ, transportadora);
                 arrayFilters.push(filterCentro);
             }
             

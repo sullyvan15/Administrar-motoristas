@@ -1,4 +1,4 @@
-sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
+sap.ui.define(["sap/ui/core/mvc/Controller", 'sap/m/SearchField', 'sap/ui/model/Filter', 'sap/ui/model/type/String'], function (e, SearchField, Filter, TypeString) {
   "use strict";
 
   var oModelJson = new sap.ui.model.json.JSONModel();
@@ -21,6 +21,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
       sap.ui.core.UIComponent.getRouterFor(this)
         .getRoute("View2")
         .attachPatternMatched(this._onRouteMatched, this);
+
+
+    },
+
+    getNome: function (oEvent) {
     },
 
     onButtonSave: function (oEvent) {
@@ -48,11 +53,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
         Perscode: Drivercode,
         FirstName: firstName,
         LastName: restOfName,
-        Carrier: this.codTransportadora,
-        Drvstatus: this.getView().byId("statusMotorista").getValue() === "Disponível" ? "1" : "2",
-        CreDate: "",
+        Carrier: this.codTransportadora === undefined ? this.getView().byId("productInput2").getValue().match(/\d+/g).join('') : this.codTransportadora,
+        Drvstatus: this.getView().byId("statusMotorista").getSelectedKey() === "1" ? "" : "1",
+        CreDate: this.getView().byId("textCadastradoEm").getValue(),
         CreName: "",
-        ChaDate: "",
+        ChaDate: this.getDate(),
         ChaName: "",
         DrvXblck: "",
         StatusTxt: "",
@@ -78,6 +83,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
       //  if ( this.validateDate(dateValidFrom) === false || this.validateDate(dateValidTo) === false ) {
       //    return sap.m.MessageBox.error("Data inválida");
       //  }
+      var status = this.byId("tableCompartimentos").getItems()[i].mAggregations.cells[5].mProperties.text === "L" ? "L" : 
+                   this.byId("tableCompartimentos").getItems()[i].mAggregations.cells[5].mProperties.text === "OK" ? "OK" : "H";
+        
         var licenca = {
           DRIVERCODE: this.idMotorista,
           LICENSETYP: this.byId("tableCompartimentos").getItems()[i]
@@ -88,6 +96,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
           VALID_TO: dateValidTo,
           LICENSE_DESC: this.byId("tableCompartimentos").getItems()[i]
             .mAggregations.cells[1].mProperties.value,
+          STATUS: status,
         };
        // if ( this.validateCNH(this.byId("tableCompartimentos").getItems()[i].mAggregations.cells[2].mProperties.value === false)) {
        //   return sap.m.MessageBox.error("CNH da licença" + (i + 1)  + " inválida");
@@ -110,12 +119,14 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
           LicencaArray.push(licenca);
         }
       }
+      
 
       if (this.edit === true) {
         oModel.update("/MotoristaSet(Drivercode=" + this.idMotorista + ")", motorista,
           {
             success: function (oData, oResponse) {
-              sap.m.MessageToast.show("Motorista atualizado com sucesso");
+              sap.m.MessageToast.show("Motorista atualizado");
+              location.reload();
             },
             error: function (oError) {
               var errorMessage = oError.response.body.split(",")[13].split(":")[1];
@@ -125,9 +136,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
         );
         
         for (var i = 0; i < LicencaArray.length; i++) {
-          oModel.update("/LicencasSet(DRIVERCODE='" + this.idMotorista + "')", LicencaArray[i], {
+        oModel.update("/LicencasSet(DRIVERCODE='" + this.idMotorista + "')", LicencaArray[i], {
             success: function (oData, oResponse) {
-              sap.m.MessageToast.show("Licenças adicionadas com sucesso");
+           // sap.m.MessageToast.show("Licenças adicionadas com sucesso");
             },
             error: function (oError) {
               var errorMessage = oError.response.body.split(",")[13].split(":")[1];
@@ -135,6 +146,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
             },
           });
         }
+
       } else {
       var that = this;
         oModel.create("/MotoristaSet", motorista, {
@@ -149,12 +161,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
             sap.m.MessageBox.error(errorMessage);
           },
         });
-   
+
         for (var i = 0; i < LicencaArray.length; i++) {
           LicencaArray[i].DRIVERCODE = this.novoMotoristaId;
           oModel.create("/LicencasSet", LicencaArray[i], {
             success: function (oData, oResponse) {
-              sap.m.MessageToast.show("Licenças adicionadas com sucesso");
+            //  sap.m.MessageToast.show("Licenças adicionadas com sucesso");
               that.onButtonCancel();
             },
             error: function (oError) {
@@ -164,6 +176,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
           });
         }
       }
+    },
+
+    getDate: function (oEvent) {
+
+      var date = new Date(); // Use a data atual como exemplo
+      var year = date.getFullYear();
+      var month = ("0" + (date.getMonth() + 1)).slice(-2); // Os meses começam do 0 em JavaScript
+      var day = ("0" + date.getDate()).slice(-2);
+      var formattedDate = year + month + day;
+      return formattedDate;
     },
 
     onSetData: function (oEvent) {
@@ -178,7 +200,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
       this.byId("productInput2").setValue(oEvent.Carrier);
       this.byId("textCadastradoEm").setValue(oEvent.CreDate);
       this.byId("textModificadoEm").setValue(oEvent.ChaDate);
-      this.byId("statusMotorista").getSelectedKey(oEvent.Drvstatus === "" ? "1" : "2");
+      this.byId("statusMotorista").setSelectedKey(oEvent.Drvstatus === "" ? "1" : "2");
       this.onSetEditable(false);
       this.onBuscaLicencas();
       this.onBuscaAgendamentos();
@@ -237,22 +259,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
           var oModelJson = new sap.ui.model.json.JSONModel(o.results)
           licencas = o.results;
           that.getView().setModel(oModelJson, "LicencasSet"); 
-       //  oModelJson.setData(o.results);
-       //  
-       //  oElement.setModel(oModelJson);
-       //  oElement.bindElement("/");
         },
       });
 
     },
-
-    formatStatus: function(sValue) {
-      if (sValue === "1") {
-          return "Aguardando Check In";
-      } else {
-          // Retorne outros textos para outros valores aqui
-      }
-  },
 
     onBuscaAgendamentos: function (oEvent) {
 
@@ -273,10 +283,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
           if (o.results.length > 0) {
           that.byId("idProductsTable").setVisible(true);
           }
-       //  oModelJson.setData(o.results);
-       //  
-       //  oElement.setModel(oModelJson);
-       //  oElement.bindElement("/");
         },
       });
     },
@@ -299,7 +305,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
           var o = new sap.ui.model.json.JSONModel({
             Results: e,
           });
-          // n.getView().setModel(o, "MotoristaSet");
           n.onSetData(e);
         },
         error: function (e) {
@@ -309,96 +314,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
       });
     },
 
-    onValueHelpRequest2: function (oEvent) {
-      var spath, field, field2, Label1, Label2, id, title;
-   
-      id = oEvent.getParameters().id;
-      this.fieldScreen = this.byId(id);
+    
 
-      if (oEvent.getParameters().id.split("--")[2] === "productInput2") {
-        (spath = "/Transportadoras"),
-          (field = "Carrier"),
-          (field2 = "Carrier_desc"),
-          // filter = "PLANT",
-          (Label1 = "Código da transportadora"),
-          (Label2 = "Nome da transportadora"),
-          (title = "Transportadoras");
-      } else if (
-        oEvent.getParameters().id.split("--")[2] ===
-        "catCNH-application-ztdadmmotorista-display-component"
-      ) {
-        (spath = "/VL_SH_CNHSet"),
-          (field = "TYPE"),
-          (field2 = "DESC"),
-          //  filter = "PLANT",
-          (Label1 = "Tipo de licença"),
-          (Label2 = "Descrição da licença"),
-          (title = "Tipos de licença");
-      }
-
-      this._fragment =   this.loadFragment({
-        name: "ztdadmmotorista.view.ValueHelpDialogFilterbar2",
-      }).then(
-        function (oDialog) {
-          this._oVHD = oDialog;
-
-          this.getView().addDependent(oDialog);
-
-          oDialog.getTableAsync().then(
-            function (oTable) {
-              oTable.setModel(this.oProductsModel);
-
-              if (oTable.bindRows) {
-                oTable.bindAggregation("rows", {
-                  path: spath,
-                  events: {
-                    dataReceived: function () {
-                      oDialog.update();
-                    },
-                  },
-                });
-
-                oDialog.setTitle(title);
-                oDialog.setKey(field);
-                oDialog.setDescriptionKey(field2);
-                oDialog.setSupportMultiselect(false);
-
-                var oColumn = new sap.ui.table.Column({
-                  label: new sap.ui.commons.Label({ text: Label1 }),
-                  template: new sap.ui.commons.TextView().bindProperty(
-                    "text",
-                    field
-                  ),
-                });
-                var oColumn2 = new sap.ui.table.Column({
-                  label: new sap.ui.commons.Label({ text: Label2 }),
-                  template: new sap.ui.commons.TextView().bindProperty(
-                    "text",
-                    field2
-                  ),
-                });
-
-                oTable.addColumn(oColumn);
-                oTable.addColumn(oColumn2);
-              }
-            }.bind(this)
-          );
-
-          // oDialog.setTokens(fieldScreen.getTokens());
-          oDialog.open();
-        }.bind(this)
-      );
-    },
-    onValueHelpOkPress2: function (oEvent) {
-      var aTokens = oEvent.getParameter("tokens");
-      var oInput = this.fieldScreen;
-      if (aTokens[0].getKey().includes('CNH') === false ){
-      this.codTransportadora = aTokens[0].getKey();
-      }
-      oInput.setValue(aTokens[0].getText());
-      this._oVHD.close();
-      this.onSetDescricaoLicenca(this.fieldScreen, aTokens[0].getText(), aTokens[0].getKey());
-    },
+    
     onSetDescricaoLicenca: function (oEvent, oDescription, oKey) {
       var oTable = this.getView().byId("tableCompartimentos");
       var idItem = oEvent.getId().slice(-1);
@@ -483,6 +401,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
           LICENSENO: "",
           VALID_FROM: "",
           VALID_TO: "",
+          STATUS: "H",
         },
       ];
 
@@ -496,16 +415,144 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (e) {
     onElimninaLicenca: function (oEvent) {
       
       var oTable = this.getView().byId("tableCompartimentos");
-     if ( oTable.getBinding("items").getLength() === 1) {
-     }
+    // if ( oTable.getBinding("items").getLength() === 1) {
+    //  this.byId("tableCompartimentos").destroyItems()
+    //  return
+    // }
+     var selectedItem = oEvent.getParameters().id.slice(-1);
+     for (var i = 0; i < 7; i++) {
+      oTable.getItems()[selectedItem].getCells()[i].setVisible(false);
+      }
+      oTable.getItems()[selectedItem].mAggregations.cells[5].mProperties.text = "L"
 
+    
+    //  this.byId("tableCompartimentos").getItems()[selectedItem].setVisible()
+      oTable.getBinding("items").refresh();
+     // this.getView().byId("tableCompartimentos").removeItem(Number(selectedItem))
 
-      var selectedItem = oEvent.getParameters().id.slice(-1);
-      this.getView().byId("tableCompartimentos").removeItem(Number(selectedItem))
-
-      licencas.splice(selectedItem);
+    //  licencas.splice(selectedItem);
     },
+
+///////////////////////////////////////////////////// Search Help //////////////////////////////////////////////////
+
+
+onValueHelpRequest2: function (oEvent) {
+  var spath, field, field2, Label1, Label2, id, title;
+
+  id = oEvent.getParameters().id;
+  this.fieldScreen = this.byId(id);
+  var idField = oEvent.getParameters().id.split("--")[2];
+
+  if (idField === "productInput2") {
+    (spath = "/Transportadoras"),
+      (field = "Carrier"),
+      (field2 = "Carrier_desc"),
+      // filter = "PLANT",
+      (Label1 = "Código da transportadora"),
+      (Label2 = "Nome da transportadora"),
+      (title = "Transportadoras");
+  } else if (
+    idField ===
+    "catCNH-application-ZTD_ADM_MOTORISTA-display-component"
+//    "catCNH-application-ZTD_ADM_MOTORISTA-display-component" Descomentar ao fazer o deploy
+  ) {
+    (spath = "/VL_SH_CNHSet"),
+      (field = "TYPE"),
+      (field2 = "DESC"),
+      //  filter = "PLANT",
+      (Label1 = "Tipo de licença"),
+      (Label2 = "Descrição da licença"),
+      (title = "Tipos de licença");
+  }
+
+  this._fragment =   this.loadFragment({
+    name: "ztdadmmotorista.view.ValueHelpDialogFilterbar2",
+  }).then(
+    function (oDialog) {
+      this._oVHD = oDialog;
+      oDialog.rerender();
+    if ( idField === "productInput2" ) {
+      this._oBasicSearchField = new SearchField();
+      var oFilterBar = oDialog.getFilterBar()
+      oFilterBar.setFilterBarExpanded(false);
+      oFilterBar.setBasicSearch(this._oBasicSearchField);
+      this._oBasicSearchField.attachSearch(function() {
+        oFilterBar.search();
+      });
+    }
+
+      this.getView().addDependent(oDialog);
+
+      oDialog.getTableAsync().then(
+        function (oTable) {
+          oTable.setModel(this.oProductsModel);
+
+          if (oTable.bindRows) {
+            oTable.bindAggregation("rows", {
+              path: spath,
+              events: {
+                dataReceived: function (oEvent) {
+                  oDialog.update();
+                },
+              },
+            });
+
+            oDialog.setTitle(title);
+            oDialog.setKey(field);
+            oDialog.setDescriptionKey(field2);
+            oDialog.setSupportMultiselect(false);
+
+            var oColumn = new sap.ui.table.Column({
+              label: new sap.ui.commons.Label({ text: Label1 }),
+              template: new sap.ui.commons.TextView().bindProperty(
+                "text",
+                field
+              ),
+            });
+            var oColumn2 = new sap.ui.table.Column({
+              label: new sap.ui.commons.Label({ text: Label2 }),
+              template: new sap.ui.commons.TextView().bindProperty(
+                "text",
+                field2
+              ),
+            });
+
+            oTable.addColumn(oColumn);
+            oTable.addColumn(oColumn2);
+          }
+        }.bind(this)
+      );
+
+      // oDialog.setTokens(fieldScreen.getTokens());
+      oDialog.open();
+    }.bind(this)
+  );
+},
+onValueHelpOkPress2: function (oEvent) {
+  var aTokens = oEvent.getParameter("tokens");
+  var oInput = this.fieldScreen;
+  if (aTokens[0].getKey().includes('CNH') === false ){
+  this.codTransportadora = aTokens[0].getKey();
+  }
+  oInput.setValue(aTokens[0].getText());
+  this._oVHD.close();
+  this.onSetDescricaoLicenca(this.fieldScreen, aTokens[0].getText(), aTokens[0].getKey());
+},
+
+onFilterBarSearch: function(oEvent) {
+  var sValue = oEvent.oSource.mAggregations.content[0].mAggregations.content[1].mProperties.value;
+  var oFilter = new Filter("Carrier_desc", sap.ui.model.FilterOperator.Contains, sValue);
+  var oTable = this._oVHD.getTable();
+  var oBinding = oTable.getBinding("rows");
+  oBinding.filter([oFilter])
+  var oDialog = this._oVHD;
+  oBinding.filter(aFilters);
+  oDialog.update();    
+},
+
 
    
   });
 });
+
+
