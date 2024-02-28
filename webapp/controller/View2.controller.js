@@ -22,10 +22,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", 'sap/m/SearchField', 'sap/ui/model/
         .getRoute("View2")
         .attachPatternMatched(this._onRouteMatched, this);
 
-
-    },
-
-    getNome: function (oEvent) {
+        this._onRouteMatched();
     },
 
     onButtonSave: function (oEvent) {
@@ -70,15 +67,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller", 'sap/m/SearchField', 'sap/ui/model/
       for ( var i = 0; i < this.byId("tableCompartimentos").getItems().length; i++) {
         var dateValidFrom = this.byId("tableCompartimentos").getItems()[i].mAggregations.cells[3].mProperties.value;
         var dateValidTo = this.byId("tableCompartimentos").getItems()[i].mAggregations.cells[4].mProperties.value;
-
-        if (dateValidTo.includes('/') === true && dateValidFrom.includes('/') === true) {
-          var parts = dateValidTo.split('/');
-          dateValidTo = '20' + parts[2] + (parts[0].length < 2 ? '0' + parts[0] : parts[0]) + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
-          
-          parts = dateValidFrom.split('/');
-          dateValidFrom = '20' + parts[2] + (parts[0].length < 2 ? '0' + parts[0] : parts[0]) + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
-  
-        }
+        dateValidFrom = dateValidFrom.split(".")[2] + dateValidFrom.split(".")[1] + dateValidFrom.split(".")[0]
+        dateValidTo = dateValidTo.split(".")[2] + dateValidTo.split(".")[1] + dateValidTo.split(".")[0];
+    //    if (dateValidTo.includes('/') === true && dateValidFrom.includes('/') === true) {
+    //      var parts = dateValidTo.split('/');
+    //      dateValidTo = '20' + parts[2] + (parts[0].length < 2 ? '0' + parts[0] : parts[0]) + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
+    //      
+    //      parts = dateValidFrom.split('/');
+    //      dateValidFrom = '20' + parts[2] + (parts[0].length < 2 ? '0' + parts[0] : parts[0]) + (parts[1].length < 2 ? '0' + parts[1] : parts[1]);
+  //
+    //    }
  
       //  if ( this.validateDate(dateValidFrom) === false || this.validateDate(dateValidTo) === false ) {
       //    return sap.m.MessageBox.error("Data inválida");
@@ -292,8 +290,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller", 'sap/m/SearchField', 'sap/ui/model/
       oTable.getBinding("items").refresh();
     },
     _onRouteMatched: function (oEvent) {
-    
-      this.idMotorista = oEvent.getParameter("arguments").driverId;
+      //var idMotorista = oEvent.getParameter("arguments").driverId;
+    //
+      //this.idMotorista = idMotorista === undefined ? window.location.href.split("View2/")[1] : idMotorista;
+      this.idMotorista = window.location.href.split("View2/")[1];
       if (this.idMotorista === undefined) {
         return 
       };
@@ -383,7 +383,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", 'sap/m/SearchField', 'sap/ui/model/
     onButtonCancel: function (e) {
 
     this.getRouter().navTo("worklist", {}, true );
-     location.reload();
+    this.getView().getModel().refresh(true);
+     //location.reload();
      
     },
     getRouter: function () {
