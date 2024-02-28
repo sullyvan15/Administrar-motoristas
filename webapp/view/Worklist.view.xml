@@ -97,7 +97,7 @@
                     </OverflowToolbar>
                 </smartTable:customToolbar>
             
-                <table:Table id="idTable" rowActionCount="1"  selectionMode="None" >
+                <table:Table id="idTable" rowActionCount="1"  selectionMode="None"  visibleRowCount="20">
                     <table:rowActionTemplate>
                         <table:RowAction id="idRowAction">
                             <table:items>

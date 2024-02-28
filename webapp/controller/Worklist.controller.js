@@ -60,7 +60,8 @@ sap.ui.define([
             var oLine = oEvent.getSource().getBindingContext().getObject();
             var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("View2", { driverId: oLine.Drivercode });
-            location.reload();
+            this.getView().getModel().refresh(true);
+            //location.reload();
         },
 
     onValueHelpRequest2: function(oEvent) {
